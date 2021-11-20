@@ -1,7 +1,6 @@
 # pkitool
 
-commands needed to test this tool
+### description coming soon
 
 
-openssl genrsa -out test-key.pem 2048
 
