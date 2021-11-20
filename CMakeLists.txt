@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-project(libpki)
+project(pkitool)
 
-set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS "-O0 -ggdb")
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_FLAGS "-O0 -ggdb")
 
 find_package(OpenSSL REQUIRED)
 
-add_executable(libpki main.cpp)
+add_executable(pkitool main.c)
 
-target_link_libraries(libpki OpenSSL::Crypto)
+target_link_libraries(pkitool OpenSSL::Crypto)
