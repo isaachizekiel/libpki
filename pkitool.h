@@ -4,6 +4,8 @@
 
 /* Keys */
 
+void PKIT_generate_RSA_keypair(char *public, char *private);
+
 void PKIT_show_RSA_key(char *path);
 
 
