@@ -15,7 +15,7 @@ static void
 rsa_generate_keypair(RSA **rsa)
 {
   
-  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);;
+  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
   BIGNUM *e = BN_new();
 
   BN_set_word(e, RSA_F4);

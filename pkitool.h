@@ -3,8 +3,13 @@
 
 /* Keys */
 
-void PKIT_RSA_generate_keypair(char *path);
+void PKIT_RSA_generate_keypair(char *pk, char *sk);
 
+
+
+/* X509 Certificate */
+
+void PKIT_X509_create_certificate(char *pk, char *sk);
     
 
 
