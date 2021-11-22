@@ -7,6 +7,7 @@
  * EVP_PKEY *PEM_read_bio_PrivateKey(BIO *bp, EVP_PKEY **x,
  * pem_password_cb *cb, void *u); */
 
+#if 0
 static void 
 pem_read_evp_sk(char *path, EVP_PKEY **key)
 {
@@ -28,6 +29,7 @@ pem_read_evp_sk(char *path, EVP_PKEY **key)
   
 }
 
+#endif 
 
 /*
  * int PEM_write_bio_PrivateKey(BIO *bp, EVP_PKEY *x,
@@ -42,7 +44,7 @@ pem_write_evp_sk(char *path, EVP_PKEY *key)
   
   BIO_write_filename(key_bio, path);
 
-  if (1 != PEM_write_bio_PrivateKey(key_bio, key, NULL, NULL, 0, NULL, NULL))
+  if (1 != PEM_write_bio_PrivateKey(out_bio, key, NULL, NULL, 0, NULL, NULL))
     {
       BIO_printf(out_bio, "\n%s %d %s\n", __FILE__, __LINE__, __func__);      
       ERR_print_errors(out_bio);
@@ -59,6 +61,7 @@ pem_write_evp_sk(char *path, EVP_PKEY *key)
 /* EVP_PKEY *PEM_read_bio_PUBKEY(BIO *bp, EVP_PKEY **x,
  * pem_password_cb *cb, void *u); */
 
+#if 0
 static void 
 pem_read_evp_pk(char *path, EVP_PKEY **key)
 {
@@ -79,6 +82,7 @@ pem_read_evp_pk(char *path, EVP_PKEY **key)
   BIO_free(key_bio);  
 }
 
+#endif
 
 /* int PEM_write_bio_PUBKEY(BIO *bp, EVP_PKEY *x); */
 
@@ -102,11 +106,6 @@ pem_write_evp_pk(char *path, EVP_PKEY *key)
   BIO_free(key_bio);  
 
 }
-
-
-
-
-
 
 
 #endif

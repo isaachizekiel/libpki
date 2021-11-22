@@ -5,48 +5,23 @@
 
 
 
-/* The key pair Generation function */
-
-static void 
-evp_pkey_rsa_keygen(EVP_PKEY **pkey)
+// int EVP_PKEY_assign_RSA(EVP_PKEY *pkey, RSA *key);
+static void
+evp_pkey_assign_rsa(EVP_PKEY **key, RSA *rsa)
 {
 
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-  EVP_PKEY_CTX *ctx = EVP_PKEY_CTX_new_id(EVP_PKEY_RSA, NULL);
-
-  if (!ctx)
-    {
-      BIO_printf(out_bio, "\nError Initializing EVP_PKEY context\n");
-      goto err;
-      
-    }
   
-  if ( 1 != EVP_PKEY_keygen_init(ctx))
+  if (1 != EVP_PKEY_assign_RSA(*key, rsa))
     {
-      BIO_printf(out_bio, "\nError Initializing EVP_PKEY keygen\n");
-      goto err;
-    }
-  
-  if ( 1 != EVP_PKEY_CTX_set_rsa_keygen_bits(ctx, 2048))
-    {
-      BIO_printf(out_bio, "\nError Setting  EVP_PKEY keygen bits\n");
-      goto err;      
-    }
- 
-  /* Generate key */
-  if ( 1 != EVP_PKEY_keygen(ctx, &*pkey))
-    {     
-      BIO_printf(out_bio, "\nError EVP_PKEY keygen\n");
+      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
+      ERR_print_errors(out_bio);
       goto err;
     }
 
  err:
   BIO_free(out_bio);
-  
- 
 }
-
-
 
 
 #endif

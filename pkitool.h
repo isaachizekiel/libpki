@@ -3,8 +3,9 @@
 
 /* Keys */
 
-void PKIT_EVP_PKEY_generate_RSA_keypair(char *path);
+void PKIT_RSA_generate_keypair(char *path);
 
+    
 
 
 #endif
