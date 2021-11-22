@@ -3,6 +3,38 @@
 
 #include "pkitool-openssl.h"
 
+/*
+ * int PEM_write_bio_PrivateKey(BIO *bp, EVP_PKEY *x,
+ * const EVP_CIPHER *enc, unsigned char *kstr, int klen,
+ * pem_password_cb *cb, void *u); */
+
+static void 
+pem_write_evp_pkey(char *path, EVP_PKEY *key)
+{
+  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+  BIO *key_bio = BIO_new(BIO_s_file());
+
+  int rc = 0;
+
+  BIO_write_filename(key_bio, path);
+  rc = PEM_write_bio_PrivateKey(key_bio, key, NULL, NULL, 0, NULL, NULL);
+  if (rc != 1)
+    {
+      
+      //BIO_printf(out_bio, "\n Error %s\n", ERR_reason_error_string(rc));
+
+      ERR_print_errors(out_bio);
+      goto err;
+    }
+  
+  
+ err:  
+  BIO_free(out_bio);
+}
+
+
+
+
 
 /*  
  * RSA *PEM_read_bio_RSAPublicKey(BIO *bp, RSA **x,

@@ -1,4 +1,5 @@
 #include "pkitool-key-rsa.h"
+#include "pkitool-evp-pkey.h"
 #include "pkitool-pem.h"
 
 #include "pkitool-cert.h"
@@ -40,8 +41,12 @@ PKIT_PEM_print_RSA_pk(char *pkpath)
     
   pem_read_rsa_pk(pkpath, &rsa);
 
+  //evp_pkey_assign_rsa(evp_, rsa_);
+  
   rsa_check_key(rsa);
 
+  //evp_pkey_check_pk(evp_);
+  
   pem_print_rsa_pk(rsa);
   
   RSA_free(rsa);
@@ -51,18 +56,31 @@ PKIT_PEM_print_RSA_pk(char *pkpath)
 void
 PKIT_PEM_print_RSA_sk(char *skpath)
 {
-
+  
   RSA *rsa = RSA_new();
   
   pem_read_rsa_sk(skpath, &rsa);
-
+  
   rsa_check_key(rsa);
-
+  
   pem_print_rsa_sk(rsa);
   
   RSA_free(rsa);
-
+  
   /* FIXME this causes a segfault */
   //RSA_free(rsa);
-    
+  
+}
+
+
+void
+PKIT_EVP_PKEY_generate_RSA_keypair(char *path)
+{
+
+  EVP_PKEY *pkey = EVP_PKEY_new();
+  
+  evp_pkey_rsa_keygen(&pkey);
+
+  pem_write_evp_pkey(path, pkey);
+  
 }
