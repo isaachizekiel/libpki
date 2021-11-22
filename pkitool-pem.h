@@ -9,7 +9,7 @@
  * pem_password_cb *cb, void *u); */
 
 static void
-pem_read_rsa_pk(char *path, RSA *rsa)
+pem_read_rsa_pk(char *path, RSA **rsa)
 {
 
   BIO *key_bio;
@@ -18,8 +18,9 @@ pem_read_rsa_pk(char *path, RSA *rsa)
   key_bio = BIO_new(BIO_s_file());
   out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
 
-  BIO_write_filename(key_bio, path);
-  if ( ! PEM_read_bio_RSAPublicKey(key_bio, &rsa, NULL, NULL))    
+  BIO_read_filename(key_bio, path);
+  
+  if ( ! PEM_read_bio_RSAPublicKey(key_bio, &*rsa, NULL, NULL))    
     {
       BIO_printf(out_bio, "\nError Reading Public Key\n");
       goto err;
@@ -35,14 +36,15 @@ pem_read_rsa_pk(char *path, RSA *rsa)
 static void
 pem_write_rsa_pk(char *path, RSA *rsa)
 {
-
+  
   BIO *key_bio;
   BIO *out_bio;  
-
+  
   key_bio = BIO_new(BIO_s_file());
   out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-
+  
   BIO_write_filename(key_bio, path);
+  
   if ( 1 != PEM_write_bio_RSAPublicKey(key_bio, rsa))    
     {
       BIO_printf(out_bio, "\nError Writing Public Key\n");
@@ -80,7 +82,7 @@ pem_print_rsa_pk(RSA *rsa)
  * pem_password_cb *cb, void *u); */
 
 static void
-pem_read_rsa_sk(char *path, RSA *rsa)
+pem_read_rsa_sk(char *path, RSA **rsa)
 {
 
   BIO *key_bio;
@@ -89,8 +91,9 @@ pem_read_rsa_sk(char *path, RSA *rsa)
   key_bio = BIO_new(BIO_s_file());
   out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
 
-  BIO_write_filename(key_bio, path);
-  if ( ! PEM_read_bio_RSAPrivateKey(key_bio, &rsa, NULL, NULL ))
+  BIO_read_filename(key_bio, path);
+  
+  if ( ! PEM_read_bio_RSAPrivateKey(key_bio, &*rsa, NULL, NULL ))
     {
       BIO_printf(out_bio, "\nError Reading Private Key\n");
       goto err;
@@ -117,6 +120,7 @@ pem_write_rsa_sk(char *path, RSA *rsa)
   out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
 
   BIO_write_filename(key_bio, path);
+  
   if ( 1 != PEM_write_bio_RSAPrivateKey(key_bio, rsa, NULL, NULL, 0, NULL, NULL))    
     {
       BIO_printf(out_bio, "\nError Writing Private Key\n");

@@ -12,8 +12,8 @@
 
 void PKIT_RSA_generate_keypair(char *pkpath, char *skpath)
 {
-  
-  /* Initialize the PrivateKey */
+
+  /* Initialize the RSA Object */
   RSA *rsa = RSA_new();
   //EVP_PKEY *key = EVP_PKEY_new();
 
@@ -35,15 +35,14 @@ void
 PKIT_PEM_print_RSA_pk(char *pkpath)
 {
 
+  /* Initialize the RSA Object */
   RSA *rsa = RSA_new();
     
-  pem_read_rsa_pk(pkpath, rsa);
+  pem_read_rsa_pk(pkpath, &rsa);
 
   rsa_check_key(rsa);
 
   pem_print_rsa_pk(rsa);
-
-  pem_print_rsa_sk(rsa);
   
   RSA_free(rsa);
   
@@ -55,8 +54,15 @@ PKIT_PEM_print_RSA_sk(char *skpath)
 
   RSA *rsa = RSA_new();
   
-  pem_read_rsa_sk(skpath, rsa);
+  pem_read_rsa_sk(skpath, &rsa);
 
+  rsa_check_key(rsa);
+
+  pem_print_rsa_sk(rsa);
+  
   RSA_free(rsa);
+
+  /* FIXME this causes a segfault */
+  //RSA_free(rsa);
     
 }

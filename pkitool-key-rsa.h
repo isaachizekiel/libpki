@@ -7,9 +7,7 @@
 BN_GENCB *
 RSA_generate_keypair_progress_cb()
 {
-  
   return NULL;
-  
 }
 
 /* int RSA_generate_key_ex(RSA *rsa, int bits, BIGNUM *e, BN_GENCB *cb); */
@@ -34,13 +32,17 @@ rsa_generate_keypair(RSA **rsa)
   
 }
 
+/*
+ * int RSA_check_key(const RSA *rsa);
+ * this function uses a deprecated */
 static void
 rsa_check_key(RSA *rsa)
 {
 
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);;
+
   /* Check if our rsa is valid */
-  if ( ! RSA_check_key(rsa))
+  if ( 1 != RSA_check_key(rsa))
     {
       BIO_printf(out_bio, "\nError Validating RSA Key\n");
       goto err;

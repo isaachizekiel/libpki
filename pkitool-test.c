@@ -1,18 +1,18 @@
 #include "pkitool.h"
 
-#define RSA_PUBLIC_KEY "/home/izak/pkitool/secure/new_rsa_public_key.pem"
-#define RSA_PRIVATE_KEY "/home/izak/pkitool/secure/new_rsa_private_key.pem"
+#define RSA_PK "/home/izak/pkitool/secure/new_rsa_pk.pem"
+#define RSA_SK "/home/izak/pkitool/secure/new_rsa_sk.pem"
 
 
 int
 main()
 {
   
-  PKIT_RSA_generate_keypair(RSA_PUBLIC_KEY, RSA_PRIVATE_KEY);
+  PKIT_RSA_generate_keypair(RSA_PK, RSA_SK);
   
-  PKIT_PEM_print_RSA_pk(RSA_PUBLIC_KEY);
+  PKIT_PEM_print_RSA_pk(RSA_PK);
   
-  PKIT_PEM_print_RSA_pk(RSA_PRIVATE_KEY);  
+  PKIT_PEM_print_RSA_sk(RSA_SK);  
   
   return 0;
   
