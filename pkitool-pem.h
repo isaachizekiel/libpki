@@ -17,6 +17,7 @@ pem_read_evp_sk(char *path, EVP_PKEY **key)
 
   if (!PEM_read_bio_PrivateKey(key_bio, &*key, NULL, NULL))
     {
+      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
       ERR_print_errors(out_bio);
       goto err;
     }
@@ -43,6 +44,7 @@ pem_write_evp_sk(char *path, EVP_PKEY *key)
 
   if (1 != PEM_write_bio_PrivateKey(key_bio, key, NULL, NULL, 0, NULL, NULL))
     {
+      BIO_printf(out_bio, "\n%s %d %s\n", __FILE__, __LINE__, __func__);      
       ERR_print_errors(out_bio);
       goto err;
     }
@@ -67,6 +69,7 @@ pem_read_evp_pk(char *path, EVP_PKEY **key)
 
   if (!PEM_read_bio_PUBKEY(key_bio, &*key, NULL, NULL))
     {
+      BIO_printf(out_bio, "\n%s %d %s\n", __FILE__, __LINE__, __func__);      
       ERR_print_errors(out_bio);
       goto err;      
     }
@@ -89,6 +92,7 @@ pem_write_evp_pk(char *path, EVP_PKEY *key)
 
   if (1 != PEM_write_bio_PUBKEY(out_bio, key))
     {
+      BIO_printf(out_bio, "\n%s %d %s\n", __FILE__, __LINE__, __func__);      
       ERR_print_errors(out_bio);
       goto err;      
     }

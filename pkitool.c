@@ -14,16 +14,16 @@ void
 PKIT_EVP_PKEY_generate_RSA_keypair(char *path)
 {
 
-  EVP_PKEY *pkey = EVP_PKEY_new();
+  EVP_PKEY *key = EVP_PKEY_new();
   
-  evp_pkey_rsa_keygen(&pkey);
+  //evp_pkey_rsa_keygen(&pkey);
 
-  pem_read_evp_sk(path, &pkey);
+  pem_read_evp_sk(path, &key);
 
-  pem_write_evp_sk(path, pkey);
+  pem_write_evp_sk(path, key);
 
-  pem_read_evp_pk(path, &pkey);
+  pem_read_evp_pk(path, &key);
   
-  pem_write_evp_pk(path, pkey);
+  //pem_write_evp_pk(path, key);
   
 }
