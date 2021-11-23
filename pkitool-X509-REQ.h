@@ -1,88 +1,77 @@
-#ifndef PKITOOL_X509_H
-#define PKITOOL_X509_H
+#ifndef PKITOOL_X509_REQUEST
+#define PKITOOL_X509_REQUEST
 
 #include "pkitool-openssl.h"
 
 
-static
-void x509_set_version(X509 *crt)
-{
-
-  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-
-  if (1 != X509_set_version(crt, 2))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-      goto err;
-    }
-
-
- err:
-  BIO_free(out_bio);
-  
-}
-
-static
-void x509_set_pubkey(X509 *crt, EVP_PKEY *pkey)
-{
-
-  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-
-  if (1 != X509_set_pubkey(crt, pkey))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-      goto err;
-    }
-
- err:
-  BIO_free(out_bio);
-  
-}
-
-static
-void x509_set_valid_date(X509 *crt, long valid_secs)
+// int X509_REQ_set_version(X509_REQ *x, long version);
+static void
+x509_req_set_version(X509_REQ *req, long version)
 {
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-  
-  if (! (X509_gmtime_adj(X509_get_notBefore(crt),0)))
+
+  if ( 1 != X509_REQ_set_version(req, version))
     {
       BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
       ERR_print_errors(out_bio);
-      goto err;      
     }
-
-  
-  if(! (X509_gmtime_adj(X509_get_notAfter(crt), valid_secs)))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-      goto err;      
-    }
-
- err:
-  BIO_free(out_bio);
     
+
+  BIO_free(out_bio);
+  
+  
 }
 
-
-static
-void x509_set_sign(X509 *crt, EVP_PKEY *skey)
+// X509_NAME *X509_REQ_get_subject_name(const X509_REQ *req);
+static void
+x509_req_get_subject_name(X509_REQ *req, X509_NAME **name)
 {
 
+  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+
+  if ( ! (*name = X509_REQ_get_subject_name(req)))
+    {
+      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
+      ERR_print_errors(out_bio);
+    }
+
+  BIO_free(out_bio);
+  
+}
+  
+
+// int X509_REQ_set_pubkey(X509_REQ *x, EVP_PKEY *pkey);
+static void
+x509_req_set_pk(X509_REQ *req, EVP_PKEY *pk)
+{
+
+  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+
+  if ( 1 != X509_REQ_set_pubkey(req, pk))
+    {
+      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
+      ERR_print_errors(out_bio);      
+    }
+
+  BIO_free(out_bio);
+  
+}
+
+// int X509_REQ_sign(X509_REQ *x, EVP_PKEY *pkey, const EVP_MD *md);
+static void
+x509_req_sign(X509_REQ *req, EVP_PKEY *sk)
+{
+  
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
 
   /* All functions return the size of the signature
    * in bytes for success and zero for failure. */
-  if (0 == X509_sign(crt, skey, EVP_sha256()))
+  if ( 0 == X509_REQ_sign(req, sk, EVP_sha256()))
     {
       BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-      goto err;      
+      ERR_print_errors(out_bio);            
     }
 
- err:
   BIO_free(out_bio);
   
 }
