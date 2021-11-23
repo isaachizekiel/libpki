@@ -1,9 +1,8 @@
-#include "pkitool-key-rsa.h"
-#include "pkitool-evp-pkey.h"
-#include "pkitool-pem.h"
+#include "pkitool-RSA.h"
+#include "pkitool-EVP-PKEY.h"
+#include "pkitool-PEM.h"
+#include "pkitool-X509.h"
 
-#include "pkitool-cert.h"
-#include "pkitool-cert-req.h"
 
 #include "pkitool.h"
 
@@ -63,46 +62,15 @@ PKIT_X509_create_certificate(char *pk, char *sk)
   pem_read_evp_sk(sk, &skey);
 
   
-  if (1 != X509_set_version(crt, 2))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-    }
+  x509_set_version(crt);
 
-  if (1 != X509_set_pubkey(crt, pkey))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-    }
+  x509_set_pubkey(crt, pkey);
 
+  x509_set_valid_date(crt, valid_secs);
 
-  if (! (X509_gmtime_adj(X509_get_notBefore(crt),0)))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-    }
-
+  x509_set_sign(crt, skey);
   
-  if(! (X509_gmtime_adj(X509_get_notAfter(crt), valid_secs)))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-    }
-  
-  
-  
-  if (! X509_sign(crt, skey, EVP_sha256()))
-    {
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);    
-    }
-
-
-  if (! PEM_write_bio_X509(out_bio, crt))
-    {    
-      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
-      ERR_print_errors(out_bio);
-    }
+  pem_x509_write(crt);
 
 }
 

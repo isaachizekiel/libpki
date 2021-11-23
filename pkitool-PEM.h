@@ -158,4 +158,21 @@ pem_read_rsa_sk(char *path, RSA **rsa)
 }
 
 
+static void
+pem_x509_write(X509 *crt)
+{
+  
+  BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
+    
+  if (! PEM_write_bio_X509(out_bio, crt))
+    {    
+      BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
+      ERR_print_errors(out_bio);
+    }
+    
+  BIO_free(out_bio);
+  
+}
+
+
 #endif
