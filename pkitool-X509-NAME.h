@@ -4,17 +4,6 @@
 #include "pkitool-openssl.h"
 
 
-//X509_NAME_add_entry_by_txt(x509_name,"C", MBSTRING_ASC, (const unsigned char*)szCountry, -1, -1, 0);
-
-//X509_NAME_add_entry_by_txt(x509_name,"ST", MBSTRING_ASC, (const unsigned char*)szProvince, -1, -1, 0);
-
-//X509_NAME_add_entry_by_txt(x509_name,"L", MBSTRING_ASC, (const unsigned char*)szCity, -1, -1, 0);
-
-//X509_NAME_add_entry_by_txt(x509_name,"O", MBSTRING_ASC, (const unsigned char*)szOrganization, -1, -1, 0);
-
-//X509_NAME_add_entry_by_txt(x509_name,"CN", MBSTRING_ASC, (const unsigned char*)szCommon, -1, -1, 0);
-
-
 
 /*
  * int X509_NAME_add_entry_by_txt(X509_NAME *name,
@@ -25,7 +14,12 @@ static void
 x509_name_add_entry_by_txt(X509_NAME *name, const char *field, const unsigned char *bytes)
 {
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-  
+
+  /*
+   * X509_NAME_add_entry_by_txt(), X509_NAME_add_entry_by_OBJ() and X509_NAME_add_entry_by_NID() add
+   * a field whose name is defined by a string field, an object obj or a NID nid respectively.
+   * The field value to be added is in bytes of length len.
+   * If len is -1 then the field length is calculated internally using strlen(bytes). */
   if ( 1 != X509_NAME_add_entry_by_txt(name, field, MBSTRING_ASC, bytes, -1, -1, 0))
     {
       BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);

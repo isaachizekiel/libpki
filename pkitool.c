@@ -91,26 +91,49 @@ void
 PKIT_X509_REQ_create(char *pk, char *sk, char *path)
 {
 
+  /* Initialize the variables   */
   X509_REQ *req = X509_REQ_new();
   X509_NAME *name = X509_NAME_new();
 
   EVP_PKEY *pkey = EVP_PKEY_new();
   EVP_PKEY *skey = EVP_PKEY_new();
-  
+
+  /* Read teh public key */
   pem_read_evp_pk(pk, &pkey);  
 
+  /* Read the Secret key */
   pem_read_evp_sk(sk, &skey);
-  
+
+  /* Set the Version */
   x509_req_set_version(req, 2);
-  
+
+  /* Set the request Subject Name */
   x509_req_get_subject_name(req, &name);
-  
-  x509_name_add_entry_by_txt(name, "CN", (const unsigned char *)"HELLO");
-  
+
+  /*
+   * C                      = GB
+   * ST                     = Test State or Province
+   * L                      = Test Locality
+   * O                      = Organization Name
+   * OU                     = Organizational Unit Name
+   * CN                     = Common Name
+   * emailAddress           = test@email.address */  
+  x509_name_add_entry_by_txt(name, "C", (const unsigned char *)"GB");
+  x509_name_add_entry_by_txt(name, "ST", (const unsigned char *)"Test State or Province");
+  x509_name_add_entry_by_txt(name, "L", (const unsigned char *)"Test Locality");
+  x509_name_add_entry_by_txt(name, "O", (const unsigned char *)"Organization Name");
+  x509_name_add_entry_by_txt(name, "OU", (const unsigned char *)"Organizational Unit Name");
+  x509_name_add_entry_by_txt(name, "CN", (const unsigned char *)"Common Name");
+  x509_name_add_entry_by_txt(name, "emailAddress", (const unsigned char *)"test@email.address");
+
+
+  /* set the pk for the certificate */
   x509_req_set_pk(req, pkey);
-  
+
+  /* and sign using the secret key */
   x509_req_sign(req, skey);
 
+  /* finally write it to a file */
   pem_x509_req_write(req, path);
     
 }

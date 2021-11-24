@@ -15,6 +15,8 @@ pem_read_evp_sk(char *path, EVP_PKEY **key)
   
   BIO_read_filename(key_bio, path);
 
+  /* The PEM functions read or write structures in PEM format.
+   * In this sense PEM format is simply base64 encoded data surrounded by header lines. */
   if (!PEM_read_bio_PrivateKey(key_bio, &*key, NULL, NULL))
     {
       BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
@@ -29,14 +31,16 @@ pem_read_evp_sk(char *path, EVP_PKEY **key)
 
 /* EVP_PKEY *PEM_read_bio_PUBKEY(BIO *bp, EVP_PKEY **x,
  * pem_password_cb *cb, void *u); */
-
 static void 
 pem_read_evp_pk(char *path, EVP_PKEY **key)
 {
   
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
   BIO *key_bio = BIO_new(BIO_s_file());
-  
+
+  /* BIO_s_file() returns the BIO file method.
+   * As its name implies it is a wrapper round the stdio
+   * FILE structure and it is a source/sink BIO. */
   BIO_read_filename(key_bio, path);
 
   if (!PEM_read_bio_PUBKEY(key_bio, &*key, NULL, NULL))

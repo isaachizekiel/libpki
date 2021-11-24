@@ -11,7 +11,10 @@ evp_pkey_assign_rsa(EVP_PKEY **key, RSA *rsa)
 {
 
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
-  
+
+  /* EVP_PKEY_set1_RSA(), EVP_PKEY_set1_DSA(),
+   * EVP_PKEY_set1_DH() and EVP_PKEY_set1_EC_KEY()
+   * set the key referenced by pkey to key. */
   if (1 != EVP_PKEY_assign_RSA(*key, rsa))
     {
       BIO_printf(out_bio, "\nError %s %d %s\n", __FILE__, __LINE__, __func__);
