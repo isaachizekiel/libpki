@@ -57,7 +57,7 @@ pem_read_evp_pk(char *path, EVP_PKEY **key)
 }
 
 static
-void pem_x509_read(X509 **crt, char *path)
+void pem_x509_read(char *path, X509 **crt)
 {
   BIO *out_bio = BIO_new_fp(stdout, BIO_NOCLOSE);
   BIO *crt_bio = BIO_new(BIO_s_file());
